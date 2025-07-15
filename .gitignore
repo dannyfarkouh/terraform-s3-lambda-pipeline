@@ -1,0 +1,18 @@
+# Terraform local state files
+*.tfstate
+*.tfstate.*
+
+# Terraform plugin cache
+.terraform/
+
+# Sensitive SSH key files
+*.pem
+
+# Optional: terraform variable files with secrets
+*.tfvars
+
+# Lock files (only ignore if you *don't* want reproducibility)
+# .terraform.lock.hcl ← We want to keep this in Git
+
+# Debug logs
+crash.log

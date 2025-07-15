@@ -1,7 +1,8 @@
-# Policies and Rules so that the EC2 instance is able to push files into the s3 bucket 
-# Role
+# IAM roles + policy + attach + profile (attached to ec2 instance)
+
+# IAM Rule (That we will give the ec2 instance)
 resource "aws_iam_role" "ec2_s3_upload_role" {
-  name = "ec2-s3-upload-role"
+  name = "ec2_s3_upload_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -15,9 +16,9 @@ resource "aws_iam_role" "ec2_s3_upload_role" {
   })
 }
 
-# Policy 
-resource "aws_iam_policy" "ec2_s3_upload_policy" {
-  name = "ec2-s3-upload-policy"
+# IAM Policy to upload into s3 buckets 
+resource "aws_iam_policy" "s3_upload_policy" {
+  name = "ec2_s3_upload_policy"
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -31,14 +32,14 @@ resource "aws_iam_policy" "ec2_s3_upload_policy" {
   })
 }
 
-# Attach role to policy 
-resource "aws_iam_role_policy_attachment" "ec2_s3_upload_attachment" {
+# Policy Role Attachment 
+resource "aws_iam_role_policy_attachment" "attach_s3_policy_to_role" {
   role       = aws_iam_role.ec2_s3_upload_role.name
-  policy_arn = aws_iam_policy.ec2_s3_upload_policy.arn
+  policy_arn = aws_iam_policy.s3_upload_policy.arn
 }
 
-# Instance profile 
-resource "aws_iam_instance_profile" "ec2_s3_upload_profile" {
-  name = "ec2-s3-upload-profile"
+# Profile Role
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "ec2_s3_upload_profile"
   role = aws_iam_role.ec2_s3_upload_role.name
 }

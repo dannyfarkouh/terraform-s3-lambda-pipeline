@@ -28,3 +28,19 @@ resource "aws_lambda_permission" "allow_s3_to_invoke_lambda" {
 }
 # At this stage, the s3 bucket can call the lambda function, but we still haven't added the 'when', 
 # so the s3 can call it but we haven't configured it to call it when there is a new file dropped. 
+
+# Add notification so that lambda function is triggered at the event of an s3 object creation 
+resource "aws_s3_bucket_notification" "s3_event_notification" {
+  bucket = aws_s3_bucket.data_s3_bucket.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.s3_event_logger.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = ""
+    filter_suffix       = ""
+  }
+
+  depends_on = [aws_lambda_permission.allow_s3_to_invoke_lambda]
+}
+# At this stage, everything should be working well, we should run a lambda function everytime a file is dumped into s3 
+# This is a perfect pipeline because we are also simulating the the dumping of json files into the s3 bucket 

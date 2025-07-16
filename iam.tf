@@ -72,10 +72,8 @@ resource "aws_iam_policy" "lambda_s3_get_policy" {
     Version = "2012-10-17"
 
     Statement = [{
-      Effect = "Allow"
-      Action = [
-        "s3:GetObject"
-      ]
+      Effect   = "Allow"
+      Action   = ["s3:GetObject"]
       Resource = "${aws_s3_bucket.data_s3_bucket.arn}/*"
       },
       {
@@ -88,4 +86,10 @@ resource "aws_iam_policy" "lambda_s3_get_policy" {
         Resource = "*"
     }]
   })
+}
+
+# Policy Role Attachment 
+resource "aws_iam_role_policy_attachment" "attach_lambda_policy_to_role" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_s3_get_policy.arn
 }

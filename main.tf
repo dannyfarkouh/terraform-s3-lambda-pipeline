@@ -14,3 +14,17 @@ resource "aws_lambda_function" "s3_event_logger" {
   timeout = 10   # Max runtime in seconds 
   publish = true # Creates a versioned Lambda 
 }
+# At this stage, we now gave lambda full permissions and is now able to do what we want it to do 
+# But we still did not give the permission for the s3 to call the function
+
+# Allow S3 bucket to call lambda function
+resource "aws_lambda_permission" "allow_s3_to_invoke_lambda" {
+  statement_id  = "AllowS3Invoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.s3_event_logger.function_name
+  principal     = "s3.amazonaws.com"
+
+  source_arn = aws_s3_bucket.data_s3_bucket.arn # bucket ARN 
+}
+# At this stage, the s3 bucket can call the lambda function, but we still haven't added the 'when', 
+# so the s3 can call it but we haven't configured it to call it when there is a new file dropped. 

@@ -64,4 +64,28 @@ resource "aws_iam_role" "lambda_role" {
   })
 }
 
+# IAM Policy for lambda to get from s3 buckets and log to cloudwatch 
+resource "aws_iam_policy" "lambda_s3_get_policy" {
+  name = "lambda_s3_get_policy"
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "s3:GetObject"
+      ]
+      Resource = "${aws_s3_bucket.data_s3_bucket.arn}/*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "*"
+    }]
+  })
+}

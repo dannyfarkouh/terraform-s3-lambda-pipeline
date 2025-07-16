@@ -37,9 +37,11 @@ Each upload triggers the Lambda function, which logs metadata (file name, size, 
 ```bash
 terraform init
 terraform apply
+```
 
 ---
-
 ## Destroy 
+
 ```bash
 terraform destroy
+```

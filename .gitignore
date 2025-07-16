@@ -16,3 +16,11 @@
 
 # Debug logs
 crash.log
+
+*.zip
+
+*.env
+
+__pycache__/
+
+.terraform/

@@ -17,10 +17,15 @@
 # Debug logs
 crash.log
 
-*.zip
+# Terraform state and cache
+terraform.tfstate
+terraform.tfstate.backup
 
-*.env
+# Sensitive variable definitions
+terraform.tfvars
 
+# Python cache
 __pycache__/
 
-.terraform/
+# Zipped Lambda code (optional)
+lambda_payload.zip

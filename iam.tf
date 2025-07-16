@@ -43,3 +43,25 @@ resource "aws_iam_instance_profile" "ec2_instance_profile" {
   name = "ec2_s3_upload_profile"
   role = aws_iam_role.ec2_s3_upload_role.name
 }
+
+
+# IAM roles + policy + attach + profile (attached to lambda)
+
+# IAM Role (That we will give the lambda)
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+
